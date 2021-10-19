@@ -14,6 +14,11 @@ const Item_list = db_conenct.define('item_list', {
         itemDescription: {
             type: Sequelize.TEXT,
             allowNull: false,
+        },
+        price: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+            default: 100
         }
     },
     {
