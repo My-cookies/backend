@@ -1,0 +1,35 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/My-cookies/backend.git"
+  },
+  "author": "load",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/My-cookies/backend/issues"
+  },
+  "homepage": "https://github.com/My-cookies/backend#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-mysql-session": "^2.1.7",
+    "express-rate-limit": "^5.4.1",
+    "express-session": "^1.17.2",
+    "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.3.0",
+    "nodemon": "^2.0.13",
+    "passport": "^0.5.0",
+    "passport-discord": "^0.1.4",
+    "passport-jwt": "^4.0.0",
+    "sequelize": "^6.6.5",
+    "uuid": "^8.3.2"
+  }
+}

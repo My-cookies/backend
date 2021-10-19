@@ -3,6 +3,7 @@ const passport = require('passport');
 const sequelize = require('../database/DB_connection');
 const Sequelize = require('sequelize')
 const jwt = require('jsonwebtoken')
+const {log} = require("nodemon/lib/utils");
 
 module.exports.Router = class Auth extends Router {
     constructor() {
@@ -20,6 +21,19 @@ module.exports.Router = class Auth extends Router {
             res
                 .status(200)
                 .json({top: top})
+        })
+
+        this.get("/:user/seemoney", async (req, res) => {
+            const userID = req.params.user;
+            let user = await req.db.models.users.findOrCreate({
+                where: {
+                    userID: userID
+                }
+            })
+            res.status(200).json({
+                message: "added money with success",
+                money: user.money
+            })
         })
 
         this.post("/:user/money/add", async (req, res) => {
@@ -64,6 +78,25 @@ module.exports.Router = class Auth extends Router {
                     user: user
                 })
             }
+        })
+
+        this.post("/shop/buy", async (req, res) => {
+            const userID = req.body.userID;
+            const itemID = req.body.itemID;
+
+            req.db.models.user_items.create({
+                userID: userID,
+                itemID: itemID
+            })
+                .then(() => {
+                    res.status(200).json({
+                        message: "Item bought with success"
+                    })
+                })
+                .catch((e) => {
+                    res.status(500).json({ message: "Error while buying the game" })
+                    console.log(e)
+                })
         })
     }
 };
