@@ -30,26 +30,31 @@ module.exports.Router = class Home extends Router {
             db_connect.models.item_list.findOrCreate({
                 where: {
                     itemID: uuidv4(),
-                    itemName: "Toyota Supra",
-                    itemDescription: "SUPRAAAAA",
+                    itemName: "Spooky cookie #1",
+                    itemDescription: "NFT for the spooky cookie #1",
                 }
             })
             db_connect.models.item_list.findOrCreate({
                 where: {
                     itemID: uuidv4(),
-                    itemName: "Cookie miner",
-                    itemDescription: "that's a cookie miner, it gives you free cookies"
+                    itemName: "Spooky cookie #2",
+                    itemDescription: "NFT for the spooky cookie #2",
                 }
             })
-            db_connect.models.users.findOrCreate({
+            db_connect.models.item_list.findOrCreate({
                 where: {
-                    userID: uuidv4(),
-                    money: 1500,
+                    itemID: uuidv4(),
+                    itemName: "Spooky cookie #3",
+                    itemDescription: "NFT for the spooky cookie #3",
                 }
             })
-            res
-                .status(200)
-                .json({msg: "gg"})
+            db_connect.models.item_list.findOrCreate({
+                where: {
+                    itemID: uuidv4(),
+                    itemName: "Spooky cookie #4",
+                    itemDescription: "NFT for the spooky cookie #4",
+                }
+            })
 
         })
         this.get('/test/key', function(req, res) {

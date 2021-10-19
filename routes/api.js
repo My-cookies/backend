@@ -5,7 +5,16 @@ const Sequelize = require('sequelize')
 const jwt = require('jsonwebtoken')
 const {log} = require("nodemon/lib/utils");
 
-module.exports.Router = class Auth extends Router {
+const { buy } = require('../controllers/shopSide.controller')
+const {
+    getTop,
+    seeUserMoney,
+    userMoneyAdd,
+    userMoneyRemove,
+    userDonate
+} = require('../controllers/botSide.controller')
+
+module.exports.Router = class Api extends Router {
     constructor() {
         super();
         this.get('/', (req, res) => {
@@ -13,92 +22,18 @@ module.exports.Router = class Auth extends Router {
             res.redirect('../');
         })
 
-        this.get("/user/top", async (req, res) => {
-            let top = await req.db.models.users.findAll({
-                limit: 10,
-                order: [Sequelize.col('MONEY')],
-            })
-            res
-                .status(200)
-                .json({top: top})
-        })
+        // bot side routes
+        this.get("/user/top", getTop)
+        this.get("/:user/seemoney", seeUserMoney)
+        this.post("/:user/money/add", userMoneyAdd)
+        this.post("/:user/money/remove", userMoneyRemove)
+        this.put("/donate", userDonate)
 
-        this.get("/:user/seemoney", async (req, res) => {
-            const userID = req.params.user;
-            let user = await req.db.models.users.findOrCreate({
-                where: {
-                    userID: userID
-                }
-            })
-            res.status(200).json({
-                message: "added money with success",
-                money: user.money
-            })
-        })
-
-        this.post("/:user/money/add", async (req, res) => {
-            const userID = req.params.user;
-            let user = await req.db.models.users.findOrCreate({
-                where: {
-                    userID: userID
-                }
-            })
-            if (user) {
-                user = await req.db.models.users.findOne({
-                    where: {
-                        userID: userID
-                    }
-                })
-                user.money += parseInt(req.body.money);
-                await user.save()
-                res.status(200).json({
-                    message: "added money with success",
-                    user: user
-                })
-            }
-        })
-
-        this.post("/:user/money/remove", async (req, res) => {
-            const userID = req.params.user;
-            let user = await req.db.models.users.findOrCreate({
-                where: {
-                    userID: userID
-                }
-            })
-            if (user) {
-                user = await req.db.models.users.findOne({
-                    where: {
-                        userID: userID
-                    }
-                })
-                user.money -= parseInt(req.body.money);
-                await user.save()
-                res.status(200).json({
-                    message: "removed money with success",
-                    user: user
-                })
-            }
-        })
-
-        this.post("/shop/buy", async (req, res) => {
-            const userID = req.body.userID;
-            const itemID = req.body.itemID;
-
-            req.db.models.user_items.create({
-                userID: userID,
-                itemID: itemID
-            })
-                .then(() => {
-                    res.status(200).json({
-                        message: "Item bought with success"
-                    })
-                })
-                .catch((e) => {
-                    res.status(500).json({ message: "Error while buying the game" })
-                    console.log(e)
-                })
-        })
+        //site side routes
+        this.post("/shop/buy", buy)
     }
 };
 
-module.exports.name = '/api';
+module
+    .exports
+    .name = '/api';
