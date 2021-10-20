@@ -126,5 +126,5 @@ module.exports = {
     seeUserMoney,
     userMoneyAdd,
     userMoneyRemove,
-    userDonate
+    userDonate,
 }
